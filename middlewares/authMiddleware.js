@@ -1,23 +1,34 @@
 import JWT from 'jsonwebtoken'
 import dotenv from 'dotenv'
-import { refreshAccessToken } from '../controllers/authenticationController.js'
 dotenv.config()
 const authMiddleware=async(req,res,next)=>{
     const {access,refresh}=await req.cookies
     try {
         if(!access||!refresh){
-            res.status(401).send("invalid tokens")
+            res.status(404).send({message:"Tokens not found"})
+            return 
         }else{
-        if(JWT.verify(access,process.env.JWT_SECRET)){
-            req.body.id=JWT.decode(access,process.env.JWT_SECRET)?.id
-            req.body.rolename=JWT.decode(access,process.env.JWT_SECRET)?.rolename
-            req.body.superAdmin=JWT.decode(access,process.env.JWT_SECRET)?.superAdmin
-            next()
-        }else if(JWT.verify(refresh,process.env.JWT_SECRET)){
-            const id=verify(refresh, process.env.JWT_SECRET)
-            const newAccessToken=refreshAccessToken()
+            JWT.verify(access,process.env.JWT_SECRET,(err,decoded)=>{
+                if(err){
+                    JWT.verify(refresh,process.env.JWT_SECRET,(err,decoded)=>{
+                        if(err){
+                            res.status(492).json({message:"Invalid tokens"})
+                            return
+                        }else{
+                            req.body.refreshId=decoded.id
+                             next()
+                             return
+                        }
+                    });
+                }   else{
+                    req.body.id=decoded.id
+                    req.body.superAdmin=decoded.superAdmin
+                    req.body.rolename=decoded.rolename
+                    next()
+                    return 
+                }
+            });
         }
-    }
     } catch (error) {
         res.status(500).send("failed")
     }
