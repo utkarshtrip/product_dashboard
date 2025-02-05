@@ -1,32 +1,31 @@
 import { DataTypes} from "sequelize";
 import { sequelize } from "../configs/databaseConfig.js";
-export const User=sequelize.define(
+const User=sequelize.define(
     "user",
     {
         name:{
             type:DataTypes.STRING,
             allowNull:false,
         },
-        phone:{
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
         email:{
             type: DataTypes.STRING,
             allowNull: false,
+            unique:true
         },
-        industry:{
+        roleId:{
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        password:{
             type: DataTypes.STRING,
             allowNull: false,
         },
-        organization:{
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        demo:{
-            type:DataTypes.STRING,
-            allowNull:true,
+        superAdmin:{
+            type:DataTypes.BOOLEAN,
+            defaultValue:false,
+            allowNull:false
         }
 
     }
 )
+export default User
