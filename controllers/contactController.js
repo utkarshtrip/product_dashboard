@@ -18,17 +18,17 @@ const contact=async(req,res)=>{
                     const visitDates=[...existingVisit.visitDates,new Date()]
                     await Visitor.update({visits:parseInt(existingVisitor.visits)+1,lastVisit:new Date()}, {where:{email}})
                     await Visit.update({revisits:parseInt(existingVisit.revisits)+1,visitDates},{where:{id:existingVisit.id}})
-                    res.status(200).send({message:"Form Subitted"})
+                    res.status(200).send({message:"Form Submitted"})
                 } else {
                     const newInterests=[...existingVisitor.interests,interest]
                     await Visitor.update({visits:parseInt(existingVisitor.visits)+1,lastVisit:new Date(),interests:newInterests}, {where:{email}})
                     await Visit.create({visitDates:[new Date()],productId:existingProduct.id,visitorId:existingVisitor.id})
-                    res.status(200).send({message:"Form Subitted"}) 
+                    res.status(200).send({message:"Form Submitted"}) 
                 }
             }else{
                 const newVisitor=await Visitor.create({name,email,phone,industry,organization,visits,lastVisit:new Date(),interests:[interest]},{returning:true})
                 await Visit.create({visitDates:[new Date()],productId:existingProduct.id,visitorId:newVisitor.id})
-                res.status(200).json({message:"Form Subitted"})
+                res.status(200).json({message:"Form Submitted"})
             }
         }   else{
             const existingContact=await Contact.findOne({where:{email}})
