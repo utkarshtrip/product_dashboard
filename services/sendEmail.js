@@ -11,7 +11,12 @@ const transporter = nodemailer.createTransport({
       pass: process.env.SMTP_PASSWORD,
     },
   });
-const redirectLink='http://localhost:5173/dashboard'
+// const redirectLink='http://localhost:5173/dashboard'
+const redirectLink='https://store.flairminds.com/dashboard'
+// const hrEmail='contact.roshanpatil@gmail.com'
+const hrEmail='hr@flairminds.com'
+const cc='hasmukh@flairminds.com'
+const sender='flairmindshr@gmail.com'
 const sendLinkService=async(email,link,name,purpose)=>{
   
     try {
@@ -41,9 +46,10 @@ const sendLinkService=async(email,link,name,purpose)=>{
 const sendContactEmail=async(name,industry,organization,email,phone)=>{
   try {
     await transporter.sendMail({
-        from: `${email}`,
-        to: `contact.roshanpatil@gmail.com`,
-        subject: `${name} wants to contact us`,
+        from: `${sender}`,
+        to: `${hrEmail}`,
+        cc:`${cc}`,
+        subject: `${name} wants to connect with us`,
         html: `
 <!DOCTYPE html>
 <html>
@@ -54,7 +60,7 @@ const sendContactEmail=async(name,industry,organization,email,phone)=>{
 <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
   <div style="max-width: 600px; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
     <h2 style="color: #333; text-align: center;">New Contact Request</h2>
-    <p style="font-size: 16px; color: #555;">Someone from an ${organization} wants to contact us. Here are the details:</p>
+    <p style="font-size: 16px; color: #555;">${name} from an ${organization} wants to contact us. Here are the details:</p>
     <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
       <tr>
         <th style="text-align: left; padding: 10px; background: #007bff; color: #ffffff;">Field</th>
@@ -96,8 +102,8 @@ const sendContactEmail=async(name,industry,organization,email,phone)=>{
 const sendInterestEmail=async(name,industry,organization,email,phone,interest)=>{
   try {
     await transporter.sendMail({
-        from: `${email}`,
-        to: `contact.roshanpatil@gmail.com`,
+        from: `${sender}`,
+        to: `${hrEmail}`,
         subject: `${name} is interested in ${interest}`,
         html: `
 <!DOCTYPE html>
@@ -159,7 +165,7 @@ const sendFeedbackEmail=async(name,email,message)=>{
   try {
     await transporter.sendMail({
       from: `${email}`,
-      to: `contact.roshanpatil@gmail.com`,
+      to: `${hrEmail}`,
       subject: `New feedback from ${name}`,
       html:  `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
