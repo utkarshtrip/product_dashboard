@@ -18,11 +18,11 @@ const Visitor=sequelize.define(
         },
         industry:{
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         organization:{
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
         visits:{
             type:DataTypes.INTEGER,
